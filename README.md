@@ -1,14 +1,14 @@
 MapSnatch
 ======
 
-Tool for automating information gathering and reconaissance of domains and subdomains
+Tool for automating light reconaissance of domains and subdomains.
 
 
 What this tool can do:
 1. Find all subdomains of a domain *Using sublist3r*
 2. Determine which are alive/reachable
 3. Harvest, map, and spider the entireity of the domains site tree
-4. Harvest, map, and spider the entireity of all _subdomains_ *In progress*
+4. Harvest, map, and spider the entireity of all _subdomains_ _*In progress*_
 
 
 **Usage:** map --domain=example.com --substatus=True
