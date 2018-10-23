@@ -54,7 +54,9 @@ class MapSnatchLogic(object):
 	def check_status(self, url):
 
 		#Take a url and return a status code
-		getter='https://'+url
+		getter = url
+		if 'https://' not in url:
+			getter ='https://'+url
 		print('[-] Checking status of: {0}'.format(url))
 
 		try:
@@ -116,7 +118,7 @@ class MapSnatchLogic(object):
 	def spider_links(self):
 		#Prototyping functionality. Needs to be reworked to accept url params.
 
-		#Get all links from the landing page
+		#Get links, map links
 		clean_links = self.harvest_links(self.domain)
 		self.map_links(self.domain,clean_links)
 
@@ -124,20 +126,15 @@ class MapSnatchLogic(object):
 		self.links = self.links + clean_links
 		done = []
 
-		#Not actually recursive either, needs to build full url
-		#Alright lets try to get the rest of the links off the site
+		#Needs to be fixed to build full URL path correctly
 		for link in self.links:
 			if link not in done:
 				print('[-] Doing work with link: {0}'.format(link))
 				url = self.domain + link
-				#Go get a nice list of links from the url
 				clean_links = self.harvest_links(url)
-				#Map the results
 				self.map_links(url, clean_links)
 
-				#Lets adjust our queue to include newly discovered links
-				#As well as remove duplicates
-				#And to pop this url off our //todo
+				#Merge lists, remove dupes, pop
 				self.links = self.links + clean_links
 				self.links = list(set(self.links))
 				done.append(link)
