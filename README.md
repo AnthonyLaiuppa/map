@@ -1,9 +1,17 @@
 MapSnatch
 ======
 
-A simple CLI tool meant to generate a mapping of a domain consisting of all of its subdomains as well as URL paths present on its top level domain. The tool will also attempt a GET request to assess which (sub)domains are reachable.
+Tool for automating information gathering and reconaissance of domains and subdomains
 
-**Usage:** map --domain=example.com
+
+What this tool can do:
+1. Find all subdomains of a domain *Using sublist3r*
+2. Determine which are alive/reachable
+3. Harvest, map, and spider the entireity of the domains site tree
+4. Harvest, map, and spider the entireity of all _subdomains_ *In progress*
+
+
+**Usage:** map --domain=example.com --substatus=True
 
 **Installaion:**
 
@@ -11,4 +19,7 @@ A simple CLI tool meant to generate a mapping of a domain consisting of all of i
 
 >sublist3r and a dir containing subbrute need to be within this directory
 
-This tool isnt a finished product by any means, Ill hopefully get around to adding some more additions to make it a better tool.
+>sublist3r's requirements.txt 
+
+This tool isnt a finished product by any means, hopefully I get around to adding some more additions to make it a better tool.
+The spidering needs adjustments and theres no shortage of simple additions that could be rolled in, such as port scanning.
