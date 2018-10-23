@@ -14,6 +14,7 @@ class MapSnatchLogic(object):
 		self.links=links
 		self.alive=alive
 
+
 	def get_subs(self):
 		"""We're using sublist3r to get us the subdomains"""
 		output = self.domain + '_subdomains.txt'
@@ -27,10 +28,13 @@ class MapSnatchLogic(object):
 	 		enable_bruteforce= False, 
 	 		engines=None
 	 )
+
 		for sub in subdomains:
 			print('[!] Found subdomain - {0}'.format(sub))
+
 		print('[*] Successfully retrieved subdomains')
 		self.subdomains = subdomains
+
 
 	def get_statuses(self):
 
@@ -45,7 +49,6 @@ class MapSnatchLogic(object):
 			print('[-] {0} : {1}'.format(k,v))
 
 		print('[*] Successfully populated statuses')
-
 
 
 	def check_status(self, url):
@@ -65,6 +68,7 @@ class MapSnatchLogic(object):
 			#Unreachable
 			self.statuses[url] = 0
 
+
 	def harvest_links(self,url):
 
 		links = []
@@ -75,7 +79,6 @@ class MapSnatchLogic(object):
 		r = requests.get(getter)
 		content = r.content
 		print('[-] Harvesting Links from: {0}'.format(url))
-
 
 		#Get all the links from the page with Bs4
 		soup = BeautifulSoup(content,'html.parser')
@@ -101,6 +104,7 @@ class MapSnatchLogic(object):
 		print('[*] Links harvested from: {0}'.format(url))
 		return clean_links
 
+
 	def map_links(self,url,clean_links):
 
 		#Store our links in a dict url:[links]
@@ -110,6 +114,7 @@ class MapSnatchLogic(object):
 
 
 	def spider_links(self):
+		#Prototyping functionality. Needs to be reworked to accept url params.
 
 		#Get all links from the landing page
 		clean_links = self.harvest_links(self.domain)
@@ -119,6 +124,7 @@ class MapSnatchLogic(object):
 		self.links = self.links + clean_links
 		done = []
 
+		#Not actually recursive either, needs to build full url
 		#Alright lets try to get the rest of the links off the site
 		for link in self.links:
 			if link not in done:
@@ -139,6 +145,7 @@ class MapSnatchLogic(object):
 		#A little display of our hard earned links
 		for k,v in self.mapped_links.items():
 			print('[-] {0} : {1}'.format(k,v))
+
 
 
 
