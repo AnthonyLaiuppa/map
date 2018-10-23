@@ -4,11 +4,23 @@ import click
 
 @click.command()
 @click.option('--domain', default=None, help='Domain to perform reconaissance on.')
-@click.option('--mapsubs', default=False, help='Enable to pull all URLs on sub domain pages')
-def start_mapping(domain, mapsubs):
-	"""Lightweight recon program. Used to assess status of a (sub)domain and snatch all URLs."""
+@click.option('--substatus', default=False, help='Enable to pull all status codes of sub domain pages.', type=bool)
+@click.option('--mapsubs', default=False, help='Enable to pull all URLs found on sub domain pages.', type=bool)
+def start_mapping(domain, mapsubs, substatus):
+	"""
+		Lightweight recon program. Used to assess status of a (sub)domain and map all URLs.
+	    This will help identify targets and points of interest.
+	"""
 	print('[*] Starting with domain - {0}'.format(domain))
-	start = MapSnatchLogic(domain, mapsubs)
-	start.get_subs()
-	start.get_statuses()
-	start.harvest_links(domain)
+	msl = MapSnatchLogic(domain)
+
+	if substatus:
+		msl.get_subs()
+		msl.get_statuses()
+
+	msl.spider_links()
+
+
+
+
+

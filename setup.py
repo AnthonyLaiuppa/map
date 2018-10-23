@@ -6,7 +6,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'Click',
-        'Requests'
+        'Requests',
+        'beautifulsoup4'
     ],
     entry_points='''
         [console_scripts]
