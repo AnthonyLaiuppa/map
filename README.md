@@ -8,7 +8,7 @@ What this tool can do:
 1. Find all subdomains of a domain *Using sublist3r*
 2. Determine which are alive/reachable
 3. Harvest, map, and spider the entireity of the domains site tree
-4. Harvest, map, and spider the entireity of all _subdomains_ _*In progress*_
+4. Harvest, map, and spider the entireity of all _subdomains_ **In progress**
 
 
 **Usage:** map --domain=example.com --substatus=True
