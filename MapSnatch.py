@@ -80,7 +80,9 @@ class MapSnatchLogic(object):
 			
 		r = requests.get(getter)
 		content = r.content
-		print('[-] Harvesting Links from: {0}'.format(url))
+		if r.status_code == 404:
+			return links
+		#print('[-] Harvesting Links from: {0}'.format(url))
 
 		#Get all the links from the page with Bs4
 		soup = BeautifulSoup(content,'html.parser')
@@ -103,7 +105,7 @@ class MapSnatchLogic(object):
 		#Alternate approach using set
 		#clean_links = list(set(links) - set(out_of_scope))
 
-		print('[*] Links harvested from: {0}'.format(url))
+		#print('[*] Links harvested from: {0}'.format(url))
 		return clean_links
 
 
@@ -115,22 +117,25 @@ class MapSnatchLogic(object):
 		print('[*] Mapped found links to page {0}'.format(url))
 
 
-	def spider_links(self):
-		#Prototyping functionality. Needs to be reworked to accept url params.
 
+
+	def spider_links(self):
+		#Gets a tremendous amount of links starting from the top level 
 		#Get links, map links
 		clean_links = self.harvest_links(self.domain)
 		self.map_links(self.domain,clean_links)
-
+		
 		#Form a queue
 		self.links = self.links + clean_links
+		urls = []
 		done = []
 
-		#Needs to be fixed to build full URL path correctly
+		#Get all of the links from top level and all top level relative paths
 		for link in self.links:
 			if link not in done:
 				print('[-] Doing work with link: {0}'.format(link))
 				url = self.domain + link
+				urls.append(url)
 				clean_links = self.harvest_links(url)
 				self.map_links(url, clean_links)
 
@@ -139,19 +144,16 @@ class MapSnatchLogic(object):
 				self.links = list(set(self.links))
 				done.append(link)
 
-		#A little display of our hard earned links
-		for k,v in self.mapped_links.items():
-			print('[-] {0} : {1}'.format(k,v))
-
-
-
-
-
-
-
-
-
-
-
-
-
+		#Form an evolving queue to burrow down and get the rest
+		keys = list(self.mapped_links.keys())
+		for key in keys:
+			#Get the nested list so we can look for new pages to scrape
+			nested_links = self.mapped_links[key]
+			for link in nested_links:
+				url = self.domain+link
+				#If we already have this URL in our keys its been mapped so skip
+				if url in keys:
+					pass
+				else:
+					clean_links = self.harvest_links(url)
+					self.map_links(url, clean_links)
